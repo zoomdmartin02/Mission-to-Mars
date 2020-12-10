@@ -1,3 +1,6 @@
+# ignore specific files
+practice.ipnyb
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
