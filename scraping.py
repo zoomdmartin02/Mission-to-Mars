@@ -26,9 +26,6 @@ def scrape_all():
     browser.quit()
     return data
 
-# Set the executable path and initialize the chrome browser in splinter
-executable_path = {'executable_path': 'chromedriver'}
-browser = Browser('chrome', **executable_path)
 
 def mars_news(browser):
     # Visit the mars nasa news site
@@ -101,8 +98,8 @@ def mars_facts():
         return None
 
     # Assign columns and set index of dataframe
-    df.columns=['description', 'value']
-    df.set_index('description', inplace=True)
+    df.columns=['Description', 'value']
+    df.set_index('Description', inplace=True)
    
     # Convert dataframe into HTML format, add bootstrap
 
