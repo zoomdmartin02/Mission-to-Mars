@@ -8,7 +8,7 @@ import datetime as dt
 # Initialize browser, create data dictionary and end the WebDriver and return the scraped data.
 def scrape_all():
     # Initiate headless driver for deployment
-    browser = Browser("chrome", executable_path="chromedriver", headless=True)
+    browser = Browser("chrome", executable_path="chromedriver", headless=False)
 
     # set news title and paragraph variables
     news_title, news_paragraph = mars_news(browser)
@@ -19,7 +19,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "last_modified": dt.datetime.now(),
+        "hemispheres" : hemispheres(browser)
     }
 
     # Stop webdriver and return data
@@ -109,6 +110,53 @@ if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
 
+def hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(url)
 
 
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+    image_urls = []
+    titles = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    html = browser.html
+    mars_hemispheres_soup = soup(html, 'html.parser')
+    product_list = mars_hemispheres_soup.find_all('div', class_='description')
+    base_url = 'https://astrogeology.usgs.gov'
+    # product_list
+
+    # loop through product_list
+    for product in product_list:
+        link = product.a['href']
+        prod_title = product.h3.text
+        titles.append(prod_title)
+        # goto link for summary page
+        browser.visit(base_url + link)
+
+        # Find and click the open full image button
+        open_full_image_button = browser.find_by_id('wide-image-toggle')
+        open_full_image_button.click()
+
+        # Find the relative image url
+        html = browser.html
+        image_soup = soup(html, 'html.parser')
+        image_container = image_soup.find_all('div', class_='downloads')
+        
+        for image_url in image_container:
+            url_link = image_url.a['href']
+            image_urls.append(url_link)
+        
+        
+            
+    how_many = len(image_urls)
+
+    for i in range(how_many):
+        new_record = {'image_url': image_urls[i], 'title' : titles[i]}
+        hemisphere_image_urls.append(new_record)
+
+
+    return hemisphere_image_urls
 
