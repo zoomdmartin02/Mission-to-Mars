@@ -51,7 +51,7 @@
                     <div class="col-md-6">
                         <div class="card text-white bg-danger" style="margin: 30px;">
                             <!-- If Images are False/None/Non-Existent, Then Default to Error Message -->
-                            <img class="card-img-top" src="{{hemisphere.image_url | default('static/images/error.png', true)}}" alt="..."/>
+                            <img class="card-img-top" src="{{hemisphere.image_url | default('static/images/error.png', true)}}" alt="..." width="350" height="350"/>
                             <div class="card-body">
                                 <p class="card-text">{{hemisphere.title}}</p>   
                             </div>
